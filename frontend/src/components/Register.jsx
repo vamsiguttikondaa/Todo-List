@@ -5,13 +5,13 @@ import { UserContext } from '../UserContext';
 
 const Register = () => {
     const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { register } = useContext(UserContext);  // Access the register function from context
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const userDetails = { email, username, password };
+        const userDetails = { email, userName, password };
         register(userDetails);  // Call the register function
     };
 
@@ -43,7 +43,7 @@ const Register = () => {
                         <TextField
                             label="Username"
                             variant="outlined"
-                            value={username}
+                            value={userName}
                             onChange={(e) => setUsername(e.target.value)}
                             required
                             sx={{ marginBottom: 2 }}
@@ -62,6 +62,7 @@ const Register = () => {
                             variant="contained"
                             color="primary"
                             sx={{ marginTop: 2 }}
+                           
                         >
                             Register
                         </Button>

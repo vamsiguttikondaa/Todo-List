@@ -26,6 +26,7 @@ public class Todo {
 	@Column(nullable = false)
 
 	private LocalDateTime created_At;
+	private boolean status;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id",nullable = false)
@@ -44,7 +45,7 @@ public class Todo {
 	public void setCreated_At(LocalDateTime created_At) {
 		this.created_At = created_At;
 	}
-	private boolean status;
+	
 	public int getTodo_Id() {
 		return Todo_Id;
 	}
@@ -63,7 +64,7 @@ public class Todo {
 	public void setDate_of_completion(Date date_of_completion) {
 		this.date_of_completion = date_of_completion;
 	}
-	public boolean isStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 	public void setStatus(boolean status) {

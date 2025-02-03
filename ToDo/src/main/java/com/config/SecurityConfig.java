@@ -45,6 +45,7 @@ public class SecurityConfig{
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	        http.csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
 	            .authorizeHttpRequests(auth -> auth
+	                .requestMatchers("/auth/register").permitAll() 
 	                .requestMatchers("/auth/login").permitAll() // Public endpoints
 //	                .requestMatchers("/todo/**").permitAll()
 

@@ -5,14 +5,17 @@ import '../style.css'
 import { UserContext } from '../UserContext';
 import TodoList from '../components/TodoList';
 import { TodoContext } from '../TodoContext';
+import {  useNavigate } from 'react-router-dom';
 
 const Main = () => {
+   const navigate=useNavigate();
     const { user, logout } = useContext(UserContext); // Assuming `logout` is available in the context
-    const {showForm,AddClick}=useContext(TodoContext)
+   
+    const { showForm, AddClick, closeForm, editingTodo } = useContext(TodoContext);
     const [anchorEl, setAnchorEl] = useState(null); // For menu anchor
     const [open, setOpen] = useState(false); // To toggle the menu
-    
- 
+   
+
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget); // Set the anchor element for the menu
         setOpen(true); // Open the menu
@@ -58,7 +61,7 @@ const Main = () => {
                         Todo List
                     </Typography>
                     <Box display="flex" alignItems="center">
-                        
+
 
                         <Button
                             variant="contained"
@@ -70,16 +73,18 @@ const Main = () => {
                         </Button>
                     </Box>
                 </Box>
-            
+
                 {/* Placeholder for Todo List Display */}
-                <TodoList/>
+                <TodoList />
 
             </div>
 
             {/* addtodo form display based on condition */}
             <div>
-                {showForm && <AddTodo onClick={AddClick} />}
+                {showForm && <AddTodo existingTodo={editingTodo} onClick={closeForm} />}
             </div>
+            {/* this is the space to show completed todos */}
+           
 
         </Container>
     );

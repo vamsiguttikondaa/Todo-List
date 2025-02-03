@@ -1,34 +1,56 @@
-import React, { createContext, useContext, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
-import { TodoContext } from "./TodoContext";
+import React, { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 // Create the context
 const UserContext = createContext();
 
 // Create the provider component
 const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user,  setUser] = useState(null);
     const [todos, settodos] = useState([]); // Manage todos here if user-specific
-    const [userId,setUSerId]=useState(null)
 
     const navigate = useNavigate();  // Hook for navigation
-        // const [todos, settodos] = useState([]);
+    const validateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:8080/auth/validate', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
 
-    const getUserId=()=>{
-        console.log("getuserid function used");
-        console.log(userId);
+                if (response.ok) {
+                    const validatedUser = await response.json();
+                    setUser(validatedUser); // Save user data in state
+                } else {
+                    console.error('Validation failed:', response.statusText);
+                    setUser(null); // Clear user data on validation failure
+                    navigate('/')
+                }
+            } catch (error) {
+                console.error('Error during validation:', error);
+                setUser(null);
+            }
+        }
+    };
         
-        return userId;
-    }
-    // const setUserId=()=>{
-    //     const uId=getUserId()
-    //     setUserId(uId);
-    //     console.log("user id set to"+userId );
+        useEffect(() => {
+           
+    
+            validateUser();
+            
+        }, []);
+
+        const getUserId = () => {
+            
+            
+            return user?.userId;
+        };
         
-    // }
-    // const getToken=()=>{
-    //     return user?.token;
-    // }
 
 
     // Login function
@@ -39,38 +61,29 @@ const UserProvider = ({ children }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userDetails),
             });
-            console.log(resp.status);  // Check for status code
+    
             if (resp.ok) {
                 const data = await resp.json();
-                setUser(
-                    {
-                        ...data,
-                        token: data.token
-                    }
-                );
-                console.log(data);
-
-                setUSerId(data.userId);
+                setUser({ ...data, token: data.token }); // Update state
+    
                 localStorage.setItem('token', data.token);
-                console.log(data.token);
-                
-                navigate('/dashboard')
+                navigate('/dashboard');
+            } else {
+                console.log("Login failed");
             }
-
-
         } catch (e) {
             console.log(e);
         }
     };
-
+    
     // Register function
     const register = async (userDetails) => {
         try {
-            const resp = await fetch("http://localhost:8080/register", {
+            const resp = await fetch("http://localhost:8080/auth/register", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userDetails),
-            });
+            })
             const data = await resp.json();
             if (data != null) {
                 setUser(data);
@@ -78,6 +91,7 @@ const UserProvider = ({ children }) => {
             console.log("Registered User:", data);
         } catch (e) {
             console.log(e);
+            console.log(" couldnt Registered User:", userDetails);
         }
     };
    
@@ -92,7 +106,7 @@ const UserProvider = ({ children }) => {
    
     
     return (
-        <UserContext.Provider value={{ user, login, register, user ,todos,settodos,logout,getUserId}}>
+        <UserContext.Provider value={{ user, login, register, todos,settodos,logout,getUserId}}>
             {children}
         </UserContext.Provider>
     );

@@ -9,7 +9,7 @@ public class LoginResponse {
     private Long userId;
     private String userName;
     private String email;  // Fixed typo
-    private List<Todo> todos;
+//    private List<Todo> todos;
 	public String getToken() {
 		return token;
 	}
@@ -34,19 +34,19 @@ public class LoginResponse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Todo> getTodos() {
-		return todos;
-	}
-	public void setTodos(List<Todo> todos) {
-		this.todos = todos;
-	}
+//	public List<Todo> getTodos() {
+//		return todos;
+//	}
+//	public void setTodos(List<Todo> todos) {
+//		this.todos = todos;
+//	}
 	public LoginResponse(String token, Long userId, String userName, String email, List<Todo> todos) {
 		super();
 		this.token = token;
 		this.userId = userId;
 		this.userName = userName;
 		this.email = email;
-		this.todos = todos;
+//		this.todos = todos;
 	}
     
    

@@ -23,6 +23,7 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	public User registerUser(User u) {
+		System.out.println("UserName received: " + u.getUserName());
 		User newUser=new User();
 		newUser.setEmail(u.getEmail());
 		newUser.setUserName(u.getUserName());
@@ -57,6 +58,11 @@ public class UserService {
 		
 		
         return ResponseEntity.ok(new LoginResponse(token, ExistingUser.getUserId(), ExistingUser.getUserName(), ExistingUser.getEmail(), ExistingUser.getTodos()));
+	}
+	
+	public ResponseEntity<User> findByEmail(String email){
+		User user= repo.findByEmail(email);
+		return ResponseEntity.ok(user);
 	}
 
 	public boolean deleteUser(Long uId) {

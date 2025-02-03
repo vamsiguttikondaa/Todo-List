@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../UserContext';
+
 import { TodoContext } from '../TodoContext';
 
 const AddTodo = ({ existingTodo=null,onClick }) => {
@@ -13,6 +13,15 @@ const AddTodo = ({ existingTodo=null,onClick }) => {
         todo_Content: '',
         date_of_completion: today
     });
+    const formatDateToYYYYMMDD = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    
     //using uzeeffect to control the input forms bro
     useEffect(()=>{
         if(existingTodo){
@@ -30,14 +39,15 @@ const AddTodo = ({ existingTodo=null,onClick }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent default form submission
+        
         console.log(todo); // Here, you can handle the submission logic
         if(existingTodo){
-            {
+             { 
                 updateTodo(todo)
-            }
+           }
         }
         else{
-            addTodo(todo);
+            {addTodo(todo);}
         }
         onClick(); //we enchure to cloje the bhutan
     };
@@ -59,7 +69,7 @@ const AddTodo = ({ existingTodo=null,onClick }) => {
                     <TextField
                         required
                         type="date"
-                        value={todo.date_of_completion}
+                        value={ formatDateToYYYYMMDD(todo.date_of_completion)}
                         onChange={handleDateChange}
                         inputProps={{
                             min: today // Disable past dates

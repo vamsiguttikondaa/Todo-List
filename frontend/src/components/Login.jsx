@@ -6,7 +6,7 @@ import {
     Typography,
     Paper,
 } from '@mui/material';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
 const Login = () => {
